@@ -37,7 +37,7 @@ class MathJax{
   static $add_script;
   static $block_script;
 
-  function init(){
+  static function init(){
     register_activation_hook(__FILE__, array(__CLASS__, 'mathjax_install'));
     register_deactivation_hook(__FILE__, array(__CLASS__, 'mathjax_uninstall'));
   
@@ -82,7 +82,7 @@ class MathJax{
     delete_option('kblog_mathjax_config');
   }
   
-  function unconditional(){
+  static function unconditional(){
     echo '<!-- MathJax Latex Plugin installed';
     if( !self::$add_script ) 
       echo ': Disabled as no shortcodes on this page';
@@ -93,15 +93,15 @@ class MathJax{
     echo ' -->';
   }
 
-  function mathjax_shortcode($atts,$content){
+  static function mathjax_shortcode($atts,$content){
     self::$add_script = true;
   }
 
-  function nomathjax_shortcode($atts,$content){
+  static function nomathjax_shortcode($atts,$content){
     self::$block_script = true;
   }
   
-  function latex_shortcode($atts,$content)
+  static function latex_shortcode($atts,$content)
   {
     self::$add_script = true;
     //this gives us an optional "syntax" attribute, which defaults to "inline", but can also be "display"
@@ -116,7 +116,7 @@ class MathJax{
     }
   }
 
-function add_script(){
+	static function add_script(){
     if( !self::$add_script )
       return;
     
@@ -141,7 +141,7 @@ function add_script(){
     wp_print_scripts( 'mathjax' );
   }
   
-  function inline_to_shortcode( $content ) {
+  static function inline_to_shortcode( $content ) {
     if ( false === strpos( $content, '$latex' ) )
       return $content;
     
@@ -152,7 +152,7 @@ function add_script(){
                                   $content );
   }
 
-  function inline_to_shortcode_callback( $matches ) {
+  static function inline_to_shortcode_callback( $matches ) {
     
   //   ##
   //   ## Also support wp-latex syntax. This includes the ability to set background and foreground 
